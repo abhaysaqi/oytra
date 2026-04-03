@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
 import '../../core/theme/app_theme.dart';
 import '../products/repositories/product_repository.dart';
 import 'order_controller.dart';
@@ -18,19 +19,12 @@ class OrderView extends GetView<OrderController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Product Info Card ──────────────────────────────────────────
             _ProductInfoCard(controller: controller),
             const SizedBox(height: 20),
-
-            // ── Quantity Stepper ───────────────────────────────────────────
             _QuantityStepper(controller: controller),
             const SizedBox(height: 20),
-
-            // ── Order Summary ──────────────────────────────────────────────
             _OrderSummaryCard(controller: controller),
             const SizedBox(height: 32),
-
-            // ── Place Order Button ─────────────────────────────────────────
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -45,8 +39,6 @@ class OrderView extends GetView<OrderController> {
     );
   }
 }
-
-// ─── Product Info Card ────────────────────────────────────────────────────────
 
 class _ProductInfoCard extends StatelessWidget {
   final OrderController controller;
@@ -90,8 +82,7 @@ class _ProductInfoCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     product.category,
-                    style:
-                        TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                    style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -119,8 +110,6 @@ class _ProductInfoCard extends StatelessWidget {
   }
 }
 
-// ─── Quantity Stepper ─────────────────────────────────────────────────────────
-
 class _QuantityStepper extends StatelessWidget {
   final OrderController controller;
   const _QuantityStepper({required this.controller});
@@ -140,13 +129,11 @@ class _QuantityStepper extends StatelessWidget {
             const SizedBox(height: 12),
             Row(
               children: [
-                // Decrement button
                 _StepButton(
                   icon: Icons.remove,
                   onTap: controller.decrement,
                 ),
                 const SizedBox(width: 16),
-                // Quantity display / manual input
                 Expanded(
                   child: Obx(() => TextFormField(
                         key: ValueKey(controller.quantity.value),
@@ -163,8 +150,7 @@ class _QuantityStepper extends StatelessWidget {
                         ),
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12)),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
                           ),
                         ),
                         onChanged: (val) {
@@ -176,7 +162,6 @@ class _QuantityStepper extends StatelessWidget {
                       )),
                 ),
                 const SizedBox(width: 16),
-                // Increment button
                 _StepButton(
                   icon: Icons.add,
                   onTap: controller.increment,
@@ -226,19 +211,14 @@ class _StepButton extends StatelessWidget {
   }
 }
 
-// ─── Order Summary Card ───────────────────────────────────────────────────────
-
 class _OrderSummaryCard extends StatelessWidget {
   final OrderController controller;
   const _OrderSummaryCard({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    // customerType is a plain (non-Rx) field set in onInit.
-    // Only controller.quantity.value is reactive here.
     final isDealer = controller.customerType == CustomerType.dealer;
     return Obx(() {
-      // quantity.value is the only Rx dependency in this widget
       final qty = controller.quantity.value;
       final unitPrice = controller.unitPrice;
       final total = unitPrice * qty;
@@ -295,7 +275,6 @@ class _OrderSummaryCard extends StatelessWidget {
       );
     });
   }
-
 }
 
 class _SummaryRow extends StatelessWidget {
@@ -313,8 +292,7 @@ class _SummaryRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label,
-              style:
-                  TextStyle(color: Colors.grey.shade600, fontSize: 14)),
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 14)),
           Text(
             value,
             style: TextStyle(

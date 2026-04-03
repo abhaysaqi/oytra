@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+
 import '../../core/theme/app_theme.dart';
 import 'barcode_controller.dart';
 import 'models/barcode_result_model.dart';
@@ -17,7 +18,6 @@ class BarcodeView extends GetView<BarcodeController> {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         actions: [
-          // Manual test input button
           IconButton(
             icon: const Icon(Icons.keyboard),
             tooltip: 'Enter barcode manually',
@@ -64,8 +64,6 @@ class BarcodeView extends GetView<BarcodeController> {
   }
 }
 
-// ─── Camera Scanner Panel ─────────────────────────────────────────────────────
-
 class _ScannerPanel extends StatelessWidget {
   final BarcodeController controller;
   const _ScannerPanel({required this.controller});
@@ -74,7 +72,6 @@ class _ScannerPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Camera feed
         MobileScanner(
           onDetect: (capture) {
             final barcode = capture.barcodes.firstOrNull;
@@ -83,7 +80,6 @@ class _ScannerPanel extends StatelessWidget {
             }
           },
         ),
-        // Overlay
         Center(
           child: Container(
             width: 260,
@@ -94,7 +90,6 @@ class _ScannerPanel extends StatelessWidget {
             ),
           ),
         ),
-        // Instructions
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -116,8 +111,6 @@ class _ScannerPanel extends StatelessWidget {
   }
 }
 
-// ─── Result Panel ─────────────────────────────────────────────────────────────
-
 class _ResultPanel extends StatelessWidget {
   final BarcodeResultModel result;
   final VoidCallback onRescan;
@@ -133,7 +126,6 @@ class _ResultPanel extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Status icon
           AnimatedContainer(
             duration: const Duration(milliseconds: 400),
             curve: Curves.elasticOut,
@@ -152,8 +144,6 @@ class _ResultPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-
-          // Valid / Invalid label
           Text(
             isValid ? '✅ Valid' : '❌ Invalid',
             style: TextStyle(
@@ -163,8 +153,6 @@ class _ResultPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-
-          // Result card
           Card(
             elevation: 4,
             child: Padding(
@@ -202,7 +190,8 @@ class _ResultPanel extends StatelessWidget {
                         : 'Last digit odd → Invalid',
                     valueStyle: TextStyle(
                       fontSize: 13,
-                      color: isValid ? AppTheme.validColor : AppTheme.invalidColor,
+                      color:
+                          isValid ? AppTheme.validColor : AppTheme.invalidColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -211,8 +200,6 @@ class _ResultPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-
-          // Scan again button
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../core/theme/app_theme.dart';
 import '../../routes/app_routes.dart';
 import 'models/product_model.dart';
@@ -16,13 +17,11 @@ class ProductsView extends GetView<ProductsController> {
       appBar: AppBar(
         title: const Text('Products'),
         actions: [
-          // No Obx here — _CustomerTypeToggle uses its own Obx internally
           _CustomerTypeToggle(controller: controller),
           const SizedBox(width: 8),
         ],
       ),
       body: Obx(() {
-        // Read all observables explicitly so GetX tracks them
         final loading = controller.isLoading.value;
         final error = controller.errorMessage.value;
         final products = controller.products;
@@ -53,15 +52,12 @@ class ProductsView extends GetView<ProductsController> {
   }
 }
 
-// ─── Customer Type Toggle ────────────────────────────────────────────────────
-
 class _CustomerTypeToggle extends StatelessWidget {
   final ProductsController controller;
   const _CustomerTypeToggle({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    // Obx lives HERE — inside the widget that actually reads customerType.value
     return Obx(() {
       final selectedType = controller.customerType.value;
       return Padding(
@@ -93,8 +89,6 @@ class _CustomerTypeToggle extends StatelessWidget {
   }
 }
 
-// ─── Product Card ────────────────────────────────────────────────────────────
-
 class _ProductCard extends StatelessWidget {
   final ProductModel product;
   final ProductsController controller;
@@ -119,7 +113,6 @@ class _ProductCard extends StatelessWidget {
             padding: const EdgeInsets.all(14),
             child: Row(
               children: [
-                // Thumbnail
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
@@ -136,7 +129,6 @@ class _ProductCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 14),
-                // Details
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,7 +194,6 @@ class _ProductCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                // MOQ chip
                 Column(
                   children: [
                     Container(
@@ -236,8 +227,6 @@ class _ProductCard extends StatelessWidget {
     });
   }
 }
-
-// ─── Error State ─────────────────────────────────────────────────────────────
 
 class _ErrorState extends StatelessWidget {
   final String message;

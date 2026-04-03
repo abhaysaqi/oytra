@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../core/theme/app_theme.dart';
 import '../../routes/app_routes.dart';
 import 'home_controller.dart';
@@ -17,15 +18,10 @@ class HomeView extends GetView<HomeController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ── Header ──────────────────────────────────────────────────
               _Header(),
               const SizedBox(height: 28),
-
-              // ── Stats Row ────────────────────────────────────────────────
               _StatsRow(),
               const SizedBox(height: 28),
-
-              // ── Quick Actions ────────────────────────────────────────────
               const Text(
                 'Quick Actions',
                 style: TextStyle(
@@ -43,8 +39,6 @@ class HomeView extends GetView<HomeController> {
     );
   }
 }
-
-// ─── Header ───────────────────────────────────────────────────────────────────
 
 class _Header extends StatelessWidget {
   @override
@@ -78,7 +72,8 @@ class _Header extends StatelessWidget {
                   color: Colors.white.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.business, color: Colors.white, size: 28),
+                child:
+                    const Icon(Icons.business, color: Colors.white, size: 28),
               ),
               const SizedBox(width: 14),
               const Column(
@@ -132,12 +127,10 @@ class _Header extends StatelessWidget {
   }
 }
 
-// ─── Stats Row ────────────────────────────────────────────────────────────────
-
 class _StatsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
         Expanded(
           child: _StatCard(
@@ -147,7 +140,7 @@ class _StatsRow extends StatelessWidget {
             color: AppTheme.accentColor,
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Expanded(
           child: _StatCard(
             icon: Icons.people,
@@ -156,7 +149,7 @@ class _StatsRow extends StatelessWidget {
             color: AppTheme.dealerColor,
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Expanded(
           child: _StatCard(
             icon: Icons.qr_code_scanner,
@@ -221,8 +214,6 @@ class _StatCard extends StatelessWidget {
     );
   }
 }
-
-// ─── Quick Actions ────────────────────────────────────────────────────────────
 
 class _QuickActions extends StatelessWidget {
   @override
@@ -299,8 +290,6 @@ class _ActionButton extends StatelessWidget {
     );
   }
 }
-
-// ─── Feature Cards ────────────────────────────────────────────────────────────
 
 class _FeatureCards extends StatelessWidget {
   @override
@@ -423,8 +412,7 @@ class _FeatureCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              const Icon(Icons.arrow_forward_ios,
-                  size: 14, color: Colors.grey),
+              const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
             ],
           ),
         ),
