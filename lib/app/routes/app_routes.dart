@@ -1,4 +1,4 @@
-abstract class AppRoutes {
+class AppRoutes {
   static const home = '/home';
   static const products = '/products';
   static const order = '/order';
