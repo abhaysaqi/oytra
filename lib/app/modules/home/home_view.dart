@@ -36,19 +36,6 @@ class HomeView extends GetView<HomeController> {
               ),
               const SizedBox(height: 14),
               _QuickActions(),
-              const SizedBox(height: 28),
-
-              // ── Feature Cards ────────────────────────────────────────────
-              const Text(
-                'Modules',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.primaryColor,
-                ),
-              ),
-              const SizedBox(height: 14),
-              _FeatureCards(),
             ],
           ),
         ),

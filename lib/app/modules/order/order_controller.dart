@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../products/models/product_model.dart';
 import '../products/repositories/product_repository.dart';
 import 'models/order_model.dart';
@@ -84,14 +85,16 @@ class _OrderConfirmationDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _Row('Product', order.product.title),
-          _Row('Customer', order.customerType == CustomerType.dealer ? 'Dealer' : 'Retail'),
+          _Row('Customer',
+              order.customerType == CustomerType.dealer ? 'Dealer' : 'Retail'),
           _Row('Unit Price', '₹${order.unitPrice.toStringAsFixed(2)}'),
           _Row('Quantity', '${order.quantity}'),
           const Divider(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Total', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
+              const Text('Total',
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
               Text(
                 '₹${order.totalPrice.toStringAsFixed(2)}',
                 style: const TextStyle(
@@ -106,7 +109,10 @@ class _OrderConfirmationDialog extends StatelessWidget {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () => Get.back(),
+          onPressed: () {
+            Get.back();
+            Get.back();
+          },
           child: const Text('Done'),
         ),
       ],

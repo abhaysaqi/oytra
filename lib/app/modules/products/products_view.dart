@@ -16,30 +16,36 @@ class ProductsView extends GetView<ProductsController> {
       appBar: AppBar(
         title: const Text('Products'),
         actions: [
-          Obx(() => _CustomerTypeToggle(controller: controller)),
+          // No Obx here — _CustomerTypeToggle uses its own Obx internally
+          _CustomerTypeToggle(controller: controller),
           const SizedBox(width: 8),
         ],
       ),
       body: Obx(() {
-        if (controller.isLoading.value) {
+        // Read all observables explicitly so GetX tracks them
+        final loading = controller.isLoading.value;
+        final error = controller.errorMessage.value;
+        final products = controller.products;
+
+        if (loading) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (controller.errorMessage.isNotEmpty) {
+        if (error.isNotEmpty) {
           return _ErrorState(
-            message: controller.errorMessage.value,
+            message: error,
             onRetry: controller.loadProducts,
           );
         }
-        if (controller.products.isEmpty) {
+        if (products.isEmpty) {
           return const Center(child: Text('No products found.'));
         }
         return RefreshIndicator(
           onRefresh: controller.loadProducts,
           child: ListView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: controller.products.length,
+            itemCount: products.length,
             itemBuilder: (_, i) =>
-                _ProductCard(product: controller.products[i], controller: controller),
+                _ProductCard(product: products[i], controller: controller),
           ),
         );
       }),
@@ -55,31 +61,35 @@ class _CustomerTypeToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: ToggleButtons(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white70,
-        selectedColor: Colors.white,
-        fillColor: Colors.white24,
-        borderColor: Colors.white38,
-        selectedBorderColor: Colors.white,
-        constraints: const BoxConstraints(minWidth: 70, minHeight: 36),
-        isSelected: [
-          controller.customerType.value == CustomerType.dealer,
-          controller.customerType.value == CustomerType.retail,
-        ],
-        onPressed: (index) {
-          controller.setCustomerType(
-            index == 0 ? CustomerType.dealer : CustomerType.retail,
-          );
-        },
-        children: const [
-          Text('Dealer', style: TextStyle(fontSize: 13)),
-          Text('Retail', style: TextStyle(fontSize: 13)),
-        ],
-      ),
-    );
+    // Obx lives HERE — inside the widget that actually reads customerType.value
+    return Obx(() {
+      final selectedType = controller.customerType.value;
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: ToggleButtons(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white70,
+          selectedColor: Colors.white,
+          fillColor: Colors.white24,
+          borderColor: Colors.white38,
+          selectedBorderColor: Colors.white,
+          constraints: const BoxConstraints(minWidth: 70, minHeight: 36),
+          isSelected: [
+            selectedType == CustomerType.dealer,
+            selectedType == CustomerType.retail,
+          ],
+          onPressed: (index) {
+            controller.setCustomerType(
+              index == 0 ? CustomerType.dealer : CustomerType.retail,
+            );
+          },
+          children: const [
+            Text('Dealer', style: TextStyle(fontSize: 13)),
+            Text('Retail', style: TextStyle(fontSize: 13)),
+          ],
+        ),
+      );
+    });
   }
 }
 

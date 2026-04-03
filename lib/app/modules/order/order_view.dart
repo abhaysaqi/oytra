@@ -234,9 +234,15 @@ class _OrderSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // customerType is a plain (non-Rx) field set in onInit.
+    // Only controller.quantity.value is reactive here.
+    final isDealer = controller.customerType == CustomerType.dealer;
     return Obx(() {
-      final isDealer =
-          controller.customerType == CustomerType.dealer;
+      // quantity.value is the only Rx dependency in this widget
+      final qty = controller.quantity.value;
+      final unitPrice = controller.unitPrice;
+      final total = unitPrice * qty;
+
       return Card(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -256,11 +262,11 @@ class _OrderSummaryCard extends StatelessWidget {
               ),
               _SummaryRow(
                 label: 'Unit Price',
-                value: '₹${controller.unitPrice.toStringAsFixed(2)}',
+                value: '₹${unitPrice.toStringAsFixed(2)}',
               ),
               _SummaryRow(
                 label: 'Quantity',
-                value: '× ${controller.quantity.value}',
+                value: '× $qty',
               ),
               const Divider(height: 24),
               Row(
@@ -274,7 +280,7 @@ class _OrderSummaryCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '₹${controller.totalPrice.toStringAsFixed(2)}',
+                    '₹${total.toStringAsFixed(2)}',
                     style: const TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 24,
@@ -289,6 +295,7 @@ class _OrderSummaryCard extends StatelessWidget {
       );
     });
   }
+
 }
 
 class _SummaryRow extends StatelessWidget {
